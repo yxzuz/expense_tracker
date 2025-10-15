@@ -1,8 +1,8 @@
 'use client'
 
 import { useExpenses } from '../hooks/useExpenses'
+import { useCurrency } from '../hooks/useCurrency'
 import { getCurrentMonth, formatDateDisplay } from '../lib/dates'
-import { formatCurrency } from '../lib/currency'
 import { 
   MonthSummaryCard, 
   RecentActivityCard, 
@@ -17,6 +17,8 @@ export default function HomePage() {
     getTotalForMonth,
     getCategoryTotals 
   } = useExpenses()
+
+  const { formatCurrency } = useCurrency()
 
   const currentMonth = getCurrentMonth()
   const currentMonthTotal = getTotalForMonth(currentMonth)

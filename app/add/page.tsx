@@ -3,12 +3,18 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useExpenses } from '../../hooks/useExpenses'
+import { useCurrency } from '../../hooks/useCurrency'
 import { validateExpenseForm, EXPENSE_CATEGORIES } from '../../lib/validation'
+import { COMMON_CURRENCIES } from '../../lib/currency'
 import { getTodayISO } from '../../lib/dates'
 
 export default function AddExpensePage() {
   const router = useRouter()
   const { addExpense } = useExpenses()
+  const { currency, mounted } = useCurrency()
+  
+  // Get currency symbol from the currency code
+  const currencySymbol = COMMON_CURRENCIES[currency.code as keyof typeof COMMON_CURRENCIES]?.symbol || '$'
   
   // Form state
   const [formData, setFormData] = useState({
@@ -113,7 +119,7 @@ export default function AddExpensePage() {
               </label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
-                  $
+                  {mounted ? currencySymbol : '$'}
                 </span>
                 <input
                   type="number"
@@ -130,7 +136,7 @@ export default function AddExpensePage() {
                 />
               </div>
               <p className="text-xs text-muted-foreground">
-                Enter the amount you spent (maximum $1,000,000)
+                Enter the amount you spent (maximum {mounted ? currencySymbol : '$'}1,000,000)
               </p>
             </div>
 

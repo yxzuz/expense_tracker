@@ -2,13 +2,13 @@
 
 import { useState, useMemo } from 'react'
 import { useExpenses } from '../../hooks/useExpenses'
+import { useCurrency } from '../../hooks/useCurrency'
 import { 
   getCurrentMonth, 
   getRecentMonths, 
   formatDateDisplay,
   type MonthPeriod 
 } from '../../lib/dates'
-import { formatCurrency } from '../../lib/currency'
 import { EXPENSE_CATEGORIES, type Expense } from '../../lib/validation'
 
 export default function HistoryPage() {
@@ -18,8 +18,11 @@ export default function HistoryPage() {
     error, 
     getExpensesByMonth,
     getExpensesByCategory,
-    deleteExpense 
+    getTotalForMonth,
+    deleteExpense
   } = useExpenses()
+  
+  const { formatCurrency } = useCurrency()
 
   // Filters
   const [selectedMonth, setSelectedMonth] = useState<MonthPeriod | null>(null)

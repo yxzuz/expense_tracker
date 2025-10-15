@@ -2,13 +2,13 @@
 
 import { useState, useMemo } from 'react'
 import { useExpenses } from '../../hooks/useExpenses'
+import { useCurrency } from '../../hooks/useCurrency'
 import { 
   getCurrentMonth, 
   getRecentMonths, 
   formatDateDisplay,
   type MonthPeriod 
 } from '../../lib/dates'
-import { formatCurrency } from '../../lib/currency'
 import { EXPENSE_CATEGORIES } from '../../lib/validation'
 
 export default function ReportsPage() {
@@ -20,6 +20,8 @@ export default function ReportsPage() {
     getCategoryTotals,
     getExpensesByMonth
   } = useExpenses()
+
+  const { formatCurrency } = useCurrency()
 
   const [selectedMonth, setSelectedMonth] = useState<MonthPeriod>(getCurrentMonth())
   

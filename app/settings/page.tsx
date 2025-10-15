@@ -10,8 +10,15 @@ import {
   SUPPORTED_CURRENCIES,
   THEME_OPTIONS 
 } from '../../lib/validation'
+import { useCurrency } from '../../hooks/useCurrency'
+import { COMMON_CURRENCIES } from '../../lib/currency'
 
 export default function SettingsPage() {
+  const { currency, mounted } = useCurrency()
+  
+  // Get currency symbol from the currency code
+  const currencySymbol = COMMON_CURRENCIES[currency.code as keyof typeof COMMON_CURRENCIES]?.symbol || '$'
+  
   const [preferences, setPreferencesState] = useState({
     currency: 'USD',
     theme: 'light' as 'light' | 'dark' | 'system',
@@ -123,6 +130,11 @@ export default function SettingsPage() {
         }))
       }
 
+      // Trigger custom event for immediate currency updates in same tab
+      window.dispatchEvent(new CustomEvent('preferencesChanged', {
+        detail: validation.data
+      }))
+
     } catch (error) {
       setMessage({
         type: 'error',
@@ -221,7 +233,7 @@ export default function SettingsPage() {
             </label>
             <div className="relative">
               <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
-                $
+                {mounted ? currencySymbol : '$'}
               </span>
               <input
                 type="number"

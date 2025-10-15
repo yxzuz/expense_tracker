@@ -1,6 +1,6 @@
 'use client'
 
-import { formatCurrency } from '../../lib/currency'
+import { useCurrency } from '../../hooks/useCurrency'
 import { formatDateDisplay } from '../../lib/dates'
 
 interface SummaryCardProps {
@@ -30,6 +30,8 @@ interface MonthSummaryCardProps {
 }
 
 export function MonthSummaryCard({ amount, expenseCount, monthLabel }: MonthSummaryCardProps) {
+  const { formatCurrency } = useCurrency()
+  
   return (
     <SummaryCard 
       title="This Month" 
@@ -54,6 +56,8 @@ interface RecentActivityCardProps {
 }
 
 export function RecentActivityCard({ recentExpense }: RecentActivityCardProps) {
+  const { formatCurrency } = useCurrency()
+  
   return (
     <SummaryCard 
       title="Recent Activity" 
@@ -90,6 +94,8 @@ interface TopCategoryCardProps {
 }
 
 export function TopCategoryCard({ category }: TopCategoryCardProps) {
+  const { formatCurrency } = useCurrency()
+  
   return (
     <SummaryCard 
       title="Top Category" 
@@ -122,6 +128,7 @@ interface BudgetStatusCardProps {
 }
 
 export function BudgetStatusCard({ monthlyBudget, spent, monthLabel }: BudgetStatusCardProps) {
+  const { formatCurrency } = useCurrency()
   const remaining = monthlyBudget ? monthlyBudget - spent : null
   const percentage = monthlyBudget ? Math.round((spent / monthlyBudget) * 100) : null
   const isOverBudget = remaining !== null && remaining < 0
