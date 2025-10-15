@@ -8,15 +8,24 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
   useEffect(() => {
     setMounted(true)
     
-    // Register service worker
+    // Aggressively clear all service workers and caches
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/sw.js')
-        .then((registration) => {
-          console.log('Service Worker registered successfully:', registration.scope)
-        })
-        .catch((error) => {
-          console.log('Service Worker registration failed:', error)
-        })
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for(let registration of registrations) {
+          registration.unregister()
+          console.log('Service Worker unregistered:', registration.scope)
+        }
+      })
+    }
+    
+    // Clear all caches to fix static file issues
+    if ('caches' in window) {
+      caches.keys().then(function(names) {
+        for(let name of names) {
+          caches.delete(name)
+          console.log('Cache deleted:', name)
+        }
+      })
     }
 
     // Initialize theme based on system preference or localStorage

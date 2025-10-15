@@ -1,14 +1,11 @@
 // Simple service worker for caching shell assets
-const CACHE_NAME = 'expense-tracker-v1';
+const CACHE_NAME = 'expense-tracker-v4';
 const SHELL_ASSETS = [
   '/',
-  '/add-expense/',
-  '/history/',
-  '/reports/',
-  '/settings/',
-  '/_next/static/css/app/layout.css',
-  '/_next/static/chunks/app/layout.js',
-  '/_next/static/chunks/app/page.js',
+  '/add',
+  '/history',
+  '/reports',
+  '/settings'
 ];
 
 // Install event - cache shell assets
@@ -52,6 +49,12 @@ self.addEventListener('fetch', (event) => {
   
   // Skip cross-origin requests
   if (!event.request.url.startsWith(self.location.origin)) return;
+  
+  // Skip ALL Next.js static files in development (they change frequently)
+  if (event.request.url.includes('/_next/static/')) return;
+  
+  // Skip webpack hot-update files in development
+  if (event.request.url.includes('webpack.hot-update')) return;
 
   event.respondWith(
     caches.match(event.request)
