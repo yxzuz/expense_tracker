@@ -1,0 +1,135 @@
+openapi: 3.0.3
+info:
+  title: Expense Tracker Client Contracts (Future API)
+  version: 0.1.0
+  description: |
+    Client-internal contracts for expenses and preferences. Implemented locally now; server-ready later.
+paths:
+  /expenses:
+    get:
+      summary: List expenses (optionally filter by date range and category)
+      parameters:
+        - in: query
+          name: from
+          schema: { type: string, format: date }
+        - in: query
+          name: to
+          schema: { type: string, format: date }
+        - in: query
+          name: category
+          schema: { type: string }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Expense" }
+    post:
+      summary: Create an expense
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ExpenseInput" }
+      responses:
+        "201":
+          {
+            description: Created,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Expense" } },
+              },
+          }
+  /expenses/{id}:
+    patch:
+      summary: Update an expense
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ExpensePatch" }
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Expense" } },
+              },
+          }
+    delete:
+      summary: Delete an expense
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "204": { description: No Content }
+  /preferences:
+    get:
+      summary: Get preferences
+      responses:
+        "200":
+          {
+            description: OK,
+            content:
+              {
+                application/json:
+                  { schema: { $ref: "#/components/schemas/Preferences" } },
+              },
+          }
+    put:
+      summary: Replace preferences
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/Preferences" }
+      responses:
+        "200": { description: OK }
+components:
+  schemas:
+    Expense:
+      type: object
+      required: [id, title, amount, category, date]
+      properties:
+        id: { type: string }
+        title: { type: string, minLength: 1, maxLength: 120 }
+        amount: { type: number, minimum: 0 }
+        category: { type: string, minLength: 1, maxLength: 40 }
+        date: { type: string, format: date }
+        note: { type: string, maxLength: 240 }
+    ExpenseInput:
+      type: object
+      required: [title, amount, category, date]
+      properties:
+        title: { type: string, minLength: 1, maxLength: 120 }
+        amount: { type: number, minimum: 0 }
+        category: { type: string, minLength: 1, maxLength: 40 }
+        date: { type: string, format: date }
+        note: { type: string, maxLength: 240 }
+    ExpensePatch:
+      type: object
+      properties:
+        title: { type: string, minLength: 1, maxLength: 120 }
+        amount: { type: number, minimum: 0 }
+        category: { type: string, minLength: 1, maxLength: 40 }
+        date: { type: string, format: date }
+        note: { type: string, maxLength: 240 }
+    Preferences:
+      type: object
+      required: [currency, theme]
+      properties:
+        currency: { type: string, minLength: 3, maxLength: 3 }
+        theme: { type: string, enum: [light, dark, system] }
+        monthlyBudget: { type: number, minimum: 0 }
