@@ -25,28 +25,28 @@ Spec: ./spec.md
 
 ## Phase 3 – User Story 1 (P1): Glanceable Dashboard Overview
 
-- [ ] T013 [US1] Add Dashboard route file at /app/page.tsx with monthly summary and remaining budget
-- [ ] T014 [US1] Add summary cards components in /components/cards/ with calm, accessible presentation
+- [x] T013 [US1] Create Dashboard page structure in /app/page.tsx with month summary, recent expenses
+- [x] T014 [US1] Add summary cards components in /components/cards/ with calm, accessible presentation
 - [ ] T015 [US1] Wire Dashboard to useExpenses selectors for total, spent, remaining
 - [ ] T016 [US1] Implement empty state for no expenses in /app/page.tsx
 
 ## Phase 4 – User Story 2 (P1): Record a New Expense Effortlessly
 
-- [ ] T017 [US2] Create Add Expense page at /app/add-expense/page.tsx with form fields (title, amount, category, date)
+- [x] T014 [US2] Create Add Expense page at /app/add/page.tsx with form validation using /lib/validation.ts
 - [ ] T018 [US2] Implement form validation and gentle error messages using /lib/validation.ts
 - [ ] T019 [US2] Save new expense via useExpenses.create and show calm confirmation
 - [ ] T020 [US2] Update Dashboard and History views after successful add
 
 ## Phase 5 – User Story 3 (P2): Review and Manage History with Ease
 
-- [ ] T021 [US3] Create History page at /app/history/page.tsx showing list or table of expenses
+- [x] T015 [US3] Create History page at /app/history/page.tsx showing list or table of expenses
 - [ ] T022 [US3] Add filters by date range and category with clear indicators
 - [ ] T023 [US3] Implement edit flow for an expense (inline or modal) in /app/history/page.tsx
 - [ ] T024 [US3] Implement delete with confirmation in /app/history/page.tsx
 
 ## Phase 6 – User Story 4 (P2): Understand Spending Patterns Calmly
 
-- [ ] T025 [US4] Create Reports page at /app/reports/page.tsx with summaries
+- [x] T025 [US4] Create Reports page at /app/reports/page.tsx with summaries
 - [ ] T026 [P] [US4] Add dynamically imported charts in /components/charts/ (lazy-load in Reports)
 - [ ] T027 [US4] Implement category totals and monthly trend logic using /lib/dates.ts and useExpenses
 
