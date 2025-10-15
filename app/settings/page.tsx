@@ -25,6 +25,11 @@ export default function SettingsPage() {
     // Load current preferences
     const result = getPreferences()
     if (result.success && result.data) {
+      // Also check localStorage for theme to sync with ThemeProvider
+      const savedTheme = localStorage.getItem('theme')
+      if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark' || savedTheme === 'system')) {
+        result.data.theme = savedTheme
+      }
       setPreferencesState(result.data)
     }
   }, [])
@@ -96,8 +101,26 @@ export default function SettingsPage() {
 
       // Apply theme immediately if it changed
       if (validation.data!.theme) {
+        // Save the theme preference (including 'system') to localStorage
+        localStorage.setItem('theme', validation.data!.theme)
+        
+        // Resolve the actual theme to apply
+        let themeToApply = validation.data!.theme
+        if (themeToApply === 'system') {
+          themeToApply = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        
+        // Apply theme to document
         document.documentElement.classList.remove('light', 'dark')
-        document.documentElement.classList.add(validation.data!.theme)
+        document.documentElement.classList.add(themeToApply)
+        document.documentElement.className = themeToApply
+        
+        // Trigger storage event for cross-tab synchronization
+        window.dispatchEvent(new StorageEvent('storage', {
+          key: 'theme',
+          newValue: validation.data!.theme, // Save the preference, not the resolved theme
+          oldValue: null
+        }))
       }
 
     } catch (error) {

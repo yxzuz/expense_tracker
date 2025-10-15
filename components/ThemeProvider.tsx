@@ -12,7 +12,15 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     const applyTheme = () => {
       const savedTheme = localStorage.getItem('theme')
       const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light')
+      
+      let theme: string
+      if (savedTheme === 'system' || !savedTheme) {
+        // Use system preference if 'system' is selected or no preference saved
+        theme = systemPrefersDark ? 'dark' : 'light'
+      } else {
+        // Use explicitly saved theme (light or dark)
+        theme = savedTheme
+      }
       
       // Apply theme using classList for better compatibility
       document.documentElement.classList.remove('light', 'dark')
@@ -44,20 +52,13 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     }
 
     // Initialize theme based on system preference or localStorage
-    const savedTheme = localStorage.getItem('theme')
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-    
-    const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light')
-    
-    // Apply theme using classList for better compatibility
-    document.documentElement.classList.remove('light', 'dark')
-    document.documentElement.classList.add(theme)
-    document.documentElement.className = theme // Keep for backwards compatibility
+    applyTheme()
     
     // Listen for system theme changes
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     const handleChange = (e: MediaQueryListEvent) => {
-      if (!localStorage.getItem('theme')) {
+      const savedTheme = localStorage.getItem('theme')
+      if (!savedTheme || savedTheme === 'system') {
         const newTheme = e.matches ? 'dark' : 'light'
         document.documentElement.classList.remove('light', 'dark')
         document.documentElement.classList.add(newTheme)
@@ -68,9 +69,16 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     // Listen for theme changes from other tabs
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'theme' && e.newValue) {
+        let themeToApply = e.newValue
+        
+        // If 'system' theme is set, resolve to actual theme
+        if (themeToApply === 'system') {
+          themeToApply = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+        }
+        
         document.documentElement.classList.remove('light', 'dark')
-        document.documentElement.classList.add(e.newValue)
-        document.documentElement.className = e.newValue
+        document.documentElement.classList.add(themeToApply)
+        document.documentElement.className = themeToApply
       }
     }
     

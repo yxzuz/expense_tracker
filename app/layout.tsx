@@ -135,8 +135,16 @@ export default function RootLayout({
           __html: `
             (function() {
               try {
-                const theme = localStorage.getItem('theme') || 
-                             (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                const savedTheme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                
+                let theme;
+                if (savedTheme === 'system' || !savedTheme) {
+                  theme = systemPrefersDark ? 'dark' : 'light';
+                } else {
+                  theme = savedTheme;
+                }
+                
                 document.documentElement.classList.remove('light', 'dark');
                 document.documentElement.classList.add(theme);
                 document.documentElement.className = theme;
