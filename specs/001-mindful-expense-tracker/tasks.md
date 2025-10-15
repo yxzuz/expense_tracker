@@ -7,13 +7,13 @@ Spec: ./spec.md
 
 ## Phase 1 – Setup
 
-- [ ] T001 Initialize Next.js 14 project structure and TypeScript config per plan in repository root
-- [ ] T002 Add Tailwind CSS v4 and PostCSS config files at repository root (tailwind.config.ts, postcss.config.js)
-- [ ] T003 Create global styles with soft palette and a11y defaults in /styles/globals.css
-- [ ] T004 Configure Next.js static export in /next.config.js and add base app structure in /app/
-- [ ] T005 Add PWA basics: /public/manifest.webmanifest and /public/favicon.ico
-- [ ] T006 Create simple service worker /public/sw.js that caches shell (HTML, CSS, main JS)
-- [ ] T007 Add light/dark mode class toggle on <html> in /app/layout.tsx (system preference fallback)
+- [x] T001 Initialize Next.js 14 project structure and TypeScript config per plan in repository root
+- [x] T002 Add Tailwind CSS v4 and PostCSS config files at repository root (tailwind.config.ts, postcss.config.js)
+- [x] T003 Create global styles with soft palette and a11y defaults in /styles/globals.css
+- [x] T004 Configure Next.js static export in /next.config.js and add base app structure in /app/
+- [x] T005 Add PWA basics: /public/manifest.webmanifest and /public/favicon.ico
+- [x] T006 Create simple service worker /public/sw.js that caches shell (HTML, CSS, main JS)
+- [x] T007 Add light/dark mode class toggle on <html> in /app/layout.tsx (system preference fallback)
 
 ## Phase 2 – Foundational
 
