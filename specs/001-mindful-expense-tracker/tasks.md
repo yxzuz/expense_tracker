@@ -17,11 +17,11 @@ Spec: ./spec.md
 
 ## Phase 2 – Foundational
 
-- [ ] T008 Create currency helpers in /lib/currency.ts using Intl.NumberFormat
-- [ ] T009 Create date helpers in /lib/dates.ts (month boundaries, filters)
-- [ ] T010 Define storage utilities and keyed versions in /lib/storage.ts (expenses:v1, preferences:v1)
-- [ ] T011 Define validation guards/parsers in /lib/validation.ts for Expense and Preferences
-- [ ] T012 Implement expenses hook with localStorage CRUD in /hooks/useExpenses.ts
+- [x] T008 Create currency helpers in /lib/currency.ts using Intl.NumberFormat
+- [x] T009 Create date helpers in /lib/dates.ts (month boundaries, filters)
+- [x] T010 Define storage utilities and keyed versions in /lib/storage.ts (expenses:v1, preferences:v1)
+- [x] T011 Define validation guards/parsers in /lib/validation.ts for Expense and Preferences
+- [x] T012 Implement expenses hook with localStorage CRUD in /hooks/useExpenses.ts
 
 ## Phase 3 – User Story 1 (P1): Glanceable Dashboard Overview
 
