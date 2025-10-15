@@ -8,6 +8,21 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
   useEffect(() => {
     setMounted(true)
     
+    // Apply theme immediately on page load to prevent flash
+    const applyTheme = () => {
+      const savedTheme = localStorage.getItem('theme')
+      const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light')
+      
+      // Apply theme using classList for better compatibility
+      document.documentElement.classList.remove('light', 'dark')
+      document.documentElement.classList.add(theme)
+      document.documentElement.className = theme // Keep for backwards compatibility
+    }
+    
+    // Apply theme immediately
+    applyTheme()
+    
     // Aggressively clear all service workers and caches
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.getRegistrations().then(function(registrations) {
@@ -33,18 +48,39 @@ export default function ThemeProvider({ children }: { children: React.ReactNode 
     const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
     
     const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light')
-    document.documentElement.className = theme
+    
+    // Apply theme using classList for better compatibility
+    document.documentElement.classList.remove('light', 'dark')
+    document.documentElement.classList.add(theme)
+    document.documentElement.className = theme // Keep for backwards compatibility
     
     // Listen for system theme changes
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     const handleChange = (e: MediaQueryListEvent) => {
       if (!localStorage.getItem('theme')) {
-        document.documentElement.className = e.matches ? 'dark' : 'light'
+        const newTheme = e.matches ? 'dark' : 'light'
+        document.documentElement.classList.remove('light', 'dark')
+        document.documentElement.classList.add(newTheme)
+        document.documentElement.className = newTheme
+      }
+    }
+    
+    // Listen for theme changes from other tabs
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'theme' && e.newValue) {
+        document.documentElement.classList.remove('light', 'dark')
+        document.documentElement.classList.add(e.newValue)
+        document.documentElement.className = e.newValue
       }
     }
     
     mediaQuery.addEventListener('change', handleChange)
-    return () => mediaQuery.removeEventListener('change', handleChange)
+    window.addEventListener('storage', handleStorageChange)
+    
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange)
+      window.removeEventListener('storage', handleStorageChange)
+    }
   }, [])
 
   if (!mounted) {
@@ -58,12 +94,32 @@ export function useTheme() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
 
   useEffect(() => {
-    setTheme(document.documentElement.className as 'light' | 'dark')
+    // Set initial theme
+    const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'
+    setTheme(currentTheme)
+    
+    // Listen for theme changes from other tabs
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'theme' && e.newValue) {
+        setTheme(e.newValue as 'light' | 'dark')
+        document.documentElement.classList.remove('light', 'dark')
+        document.documentElement.classList.add(e.newValue)
+        document.documentElement.className = e.newValue
+      }
+    }
+    
+    window.addEventListener('storage', handleStorageChange)
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+    }
   }, [])
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light'
     setTheme(newTheme)
+    document.documentElement.classList.remove('light', 'dark')
+    document.documentElement.classList.add(newTheme)
     document.documentElement.className = newTheme
     localStorage.setItem('theme', newTheme)
   }

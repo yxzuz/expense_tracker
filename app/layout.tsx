@@ -131,6 +131,22 @@ export default function RootLayout({
     <html lang="en" className="light">
       <head>
         <link rel="icon" href="/favicon.ico" />
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              try {
+                const theme = localStorage.getItem('theme') || 
+                             (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.classList.remove('light', 'dark');
+                document.documentElement.classList.add(theme);
+                document.documentElement.className = theme;
+              } catch (e) {
+                // Fallback to light theme if there's an error
+                document.documentElement.className = 'light';
+              }
+            })();
+          `
+        }} />
       </head>
       <body className={inter.className}>
         <ThemeProvider>
