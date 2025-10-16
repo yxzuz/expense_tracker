@@ -27,19 +27,19 @@ Spec: ./spec.md
 
 - [x] T013 [US1] Create Dashboard page structure in /app/page.tsx with month summary, recent expenses
 - [x] T014 [US1] Add summary cards components in /components/cards/ with calm, accessible presentation
-- [ ] T015 [US1] Wire Dashboard to useExpenses selectors for total, spent, remaining
+- [x] T015 [US1] Wire Dashboard to useExpenses selectors for total, spent, remaining
 - [ ] T016 [US1] Implement empty state for no expenses in /app/page.tsx
 
 ## Phase 4 – User Story 2 (P1): Record a New Expense Effortlessly
 
-- [x] T014 [US2] Create Add Expense page at /app/add/page.tsx with form validation using /lib/validation.ts
-- [ ] T018 [US2] Implement form validation and gentle error messages using /lib/validation.ts
-- [ ] T019 [US2] Save new expense via useExpenses.create and show calm confirmation
+- [x] T017 [US2] Create Add Expense page at /app/add/page.tsx with form validation using /lib/validation.ts
+- [x] T018 [US2] Implement form validation and gentle error messages using /lib/validation.ts
+- [x] T019 [US2] Save new expense via useExpenses.create and show calm confirmation
 - [ ] T020 [US2] Update Dashboard and History views after successful add
 
 ## Phase 5 – User Story 3 (P2): Review and Manage History with Ease
 
-- [x] T015 [US3] Create History page at /app/history/page.tsx showing list or table of expenses
+- [x] T021 [US3] Create History page at /app/history/page.tsx showing list or table of expenses
 - [ ] T022 [US3] Add filters by date range and category with clear indicators
 - [ ] T023 [US3] Implement edit flow for an expense (inline or modal) in /app/history/page.tsx
 - [ ] T024 [US3] Implement delete with confirmation in /app/history/page.tsx
@@ -52,16 +52,19 @@ Spec: ./spec.md
 
 ## Phase 7 – User Story 5 (P3): Adjust Preferences Quietly
 
-- [ ] T028 [US5] Create Settings page at /app/settings/page.tsx to manage budget, theme, currency
-- [ ] T029 [US5] Persist preferences via /lib/storage.ts and reflect changes across pages
-- [ ] T030 [US5] Implement theme toggle and currency selection UI with calm feedback
+- [x] T028 [US5] Create Settings page at /app/settings/page.tsx to manage budget, theme, currency
+- [x] T029 [US5] Persist preferences via /lib/storage.ts and reflect changes across pages
+- [x] T030 [US5] Implement theme toggle and currency selection UI with calm feedback
 
 ## Final Phase – Polish & Cross-Cutting
 
-- [ ] T031 Add accessibility passes (labels, focus states, color contrast) across /app and /components
-- [ ] T032 Add route-level code-splitting checks and verify initial JS on Dashboard < 200KB gzipped
-- [ ] T033 Add basic link checking and static export verification in CI (document in ./quickstart.md)
-- [ ] T034 Document Readme-like quickstart in ./quickstart.md with dev/export steps and CDN rewrite note
+- [x] T031 Add currency hook with reactive updates and cross-tab synchronization in /hooks/useCurrency.ts
+- [x] T032 Fix theme persistence and cross-tab synchronization with blocking script in layout
+- [x] T033 Resolve React hydration errors for currency symbols with client-side rendering
+- [x] T034 Add accessibility passes (labels, focus states, color contrast) across /app and /components
+- [ ] T035 Add route-level code-splitting checks and verify initial JS on Dashboard < 200KB gzipped
+- [ ] T036 Add basic link checking and static export verification in CI (document in ./quickstart.md)
+- [ ] T037 Document Readme-like quickstart in ./quickstart.md with dev/export steps and CDN rewrite note
 
 ## Dependencies (Story Order)
 
